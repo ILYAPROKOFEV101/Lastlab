@@ -1,9 +1,7 @@
-
+import os
 import tkinter as tk
 from tkinter import messagebox
-
 from ServerAPI.Requast import ServerClient
-from UserScreen.RegistrationScreen import RegistrationScreen
 from ViewModel.UserViewModel import UserViewModel
 
 
@@ -14,6 +12,8 @@ class LoginScreen(tk.Frame):
         self.controller = controller
         self.user_view_model = UserViewModel(
             ServerClient("https://meetmap.up.railway.app"))  # Пример создания объекта UserViewModel
+        self.data_directory = r"C:\Users\Ilya\PycharmProjects\PPSGAMEV2\data"  # Путь к директории
+        self.uid_file = os.path.join(self.data_directory, "uid.txt")  # Полный путь к файлу
         self.create_widgets()
 
     def create_widgets(self):
@@ -43,11 +43,24 @@ class LoginScreen(tk.Frame):
         if isinstance(result, dict) and result.get('status') is True and 'uid' in result:
             # Успешный вход
             uid = result['uid']  # Получаем UID
+            self.save_uid(uid)  # Сохраняем UID
             messagebox.showinfo("Успех", f"Вход выполнен успешно! UID: {uid}")
             self.controller.show_screen("main")  # Переход на главный экран
         else:
             # Ошибка при авторизации
             messagebox.showerror("Ошибка", "Неправильный Email или пароль!")
+
+    def save_uid(self, uid):
+        """Сохраняет UID в файл в указанной директории."""
+        try:
+            # Проверяем, существует ли директория, если нет — создаем
+            os.makedirs(self.data_directory, exist_ok=True)
+
+            # Записываем UID в файл (перезаписываем, если уже существует)
+            with open(self.uid_file, 'w') as file:
+                file.write(uid)
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось сохранить UID: {e}")
 
     def go_to_registration(self):
         """Метод для перехода на экран регистрации."""

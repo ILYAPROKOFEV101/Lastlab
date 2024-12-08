@@ -1,11 +1,22 @@
 import tkinter as tk
 from tkinter import messagebox
 
+import os
+import tkinter as tk
+from tkinter import messagebox
+from threading import Thread
+from ServerAPI.Requast import ServerClient
+from ViewModel.UserViewModel import UserViewModel
+
+
 class RegistrationScreen(tk.Frame):
     def __init__(self, root, controller):
         super().__init__(root)
         self.root = root
         self.controller = controller
+        self.user_view_model = UserViewModel(ServerClient("https://meetmap.up.railway.app"))  # Инициализация
+        self.data_directory = r"C:\Users\Ilya\PycharmProjects\PPSGAMEV2\data"  # Путь к директории
+        self.uid_file = os.path.join(self.data_directory, "uid.txt")  # Путь к файлу UID
         self.create_widgets()
 
     def create_widgets(self):
@@ -52,19 +63,33 @@ class RegistrationScreen(tk.Frame):
             messagebox.showwarning("Ошибка", "Все поля должны быть заполнены!")
             return
 
-        # Вывод данных для демонстрации
-        user_data = {
-            "name": name,
-            "email": email,
-            "password": password,
-            "gender": gender,
-            "age": age
-        }
-        messagebox.showinfo("Успех", f"Регистрация прошла успешно!\nДанные: {user_data}")
+        # Вызов метода для регистрации
+        self.user_view_model.create_user(
+            name, email, password, gender, age, self.handle_registration_result
+        )
+
+    def handle_registration_result(self, result):
+        """Обрабатывает результат регистрации."""
+        if isinstance(result, dict) and result.get("status") is True and "uid" in result:
+            uid = result["uid"]
+            self.save_uid(uid)  # Сохраняем UID
+            messagebox.showinfo("Успех", f"Регистрация завершена! UID: {uid}")
+            self.controller.show_screen("login")  # Переход на экран входа
+        else:
+            messagebox.showerror("Ошибка", "Не удалось зарегистрироваться. Проверьте данные!")
+
+    def save_uid(self, uid):
+        """Сохраняет UID в файл."""
+        try:
+            os.makedirs(self.data_directory, exist_ok=True)  # Создаем директорию, если её нет
+            with open(self.uid_file, 'w') as file:
+                file.write(uid)  # Перезаписываем UID
+        except Exception as e:
+            messagebox.showerror("Ошибка", f"Не удалось сохранить UID: {e}")
 
     def go_to_login(self):
         """Метод для перехода на экран входа."""
         from UserScreen.LoginScreen import LoginScreen  # Отложенный импорт
         self.destroy()  # Удаляем текущий экран
-        login_screen = LoginScreen(self.root, self.controller)  # Передаем controller
+        login_screen = LoginScreen(self.root, self.controller)
         login_screen.pack(expand=True, fill="both")
