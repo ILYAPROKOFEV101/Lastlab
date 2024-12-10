@@ -22,42 +22,54 @@ class RegistrationScreen(tk.Frame):
         self.uid_file = os.path.join(self.data_directory, "uid.txt")  # Путь к файлу UID
         self.create_widgets()
 
-
     def create_widgets(self):
         # Стилизация
         style = ttk.Style()
         style.configure("TLabel", font=("Arial", 12), background="#f4f4f4")
         style.configure("TButton", font=("Arial", 12), padding=6)
         style.configure("TEntry", font=("Arial", 12))
+        # Настройка стиля для Entry
+        style.configure("TEntry", bd=2, relief="solid")
+
+        # Настройка стиля для Combobox
+        style.configure("TCombobox", bd=2, relief="solid")
 
         # Заголовок
-        title_label = tk.Label(self, text="Регистрация", font=("Arial", 18, "bold"), bg="#f4f4f4")
+        title_label = tk.Label(self, text="Регистрация", font=("Arial", 20, "bold"), bg="#f4f4f4")
         title_label.pack(pady=10)
 
         # Поля ввода
-        form_frame = ttk.Frame(self, padding=(20, 10))
+        form_frame = ttk.Frame(self, padding=(20, 10))  # Используем ttk.Frame
         form_frame.pack(fill="x", pady=10)
 
-        ttk.Label(form_frame, text="Имя:").grid(row=0, column=0, sticky="w", pady=5)
-        self.entry_name = ttk.Entry(form_frame)
+        # Устанавливаем вес для колонок, чтобы поля занимали больше места
+        form_frame.grid_columnconfigure(1, weight=1, uniform="equal")
+
+
+
+        # Настроим шрифт для меток и полей ввода
+        label_font = ('Arial', 12)
+
+        # Поля ввода
+        tk.Label(form_frame, text="Имя:", font=label_font).grid(row=0, column=0, sticky="w", pady=5)
+        self.entry_name = tk.Entry(form_frame, font=label_font, bd=2, relief="solid", width=30)
         self.entry_name.grid(row=0, column=1, pady=5, padx=10, sticky="ew")
 
-        ttk.Label(form_frame, text="Email:").grid(row=1, column=0, sticky="w", pady=5)
-        self.entry_email = ttk.Entry(form_frame)
+        tk.Label(form_frame, text="Email:", font=label_font).grid(row=1, column=0, sticky="w", pady=5)
+        self.entry_email = tk.Entry(form_frame, font=label_font, bd=2, relief="solid", width=30)
         self.entry_email.grid(row=1, column=1, pady=5, padx=10, sticky="ew")
 
-        ttk.Label(form_frame, text="Пароль:").grid(row=2, column=0, sticky="w", pady=5)
-        self.entry_password = ttk.Entry(form_frame, show="*")
+        tk.Label(form_frame, text="Пароль:", font=label_font).grid(row=2, column=0, sticky="w", pady=5)
+        self.entry_password = tk.Entry(form_frame, font=label_font, show="*", bd=2, relief="solid", width=30)
         self.entry_password.grid(row=2, column=1, pady=5, padx=10, sticky="ew")
 
-        ttk.Label(form_frame, text="Пол:").grid(row=3, column=0, sticky="w", pady=5)
-        self.gender_var = tk.StringVar(value="male")
-        gender_menu = ttk.Combobox(form_frame, textvariable=self.gender_var, values=["male", "female", "other"],
-                                   state="readonly")
+        tk.Label(form_frame, text="Пол:", font=label_font).grid(row=3, column=0, sticky="w", pady=5)
+        self.gender_var = tk.StringVar(value="Мужской")
+        gender_menu = tk.OptionMenu(form_frame, self.gender_var, "Мужской", "Женский")
         gender_menu.grid(row=3, column=1, pady=5, padx=10, sticky="ew")
 
-        ttk.Label(form_frame, text="Возраст:").grid(row=4, column=0, sticky="w", pady=5)
-        self.entry_age = ttk.Entry(form_frame)
+        tk.Label(form_frame, text="Возраст:", font=label_font).grid(row=4, column=0, sticky="w", pady=5)
+        self.entry_age = tk.Entry(form_frame, font=label_font, bd=2, relief="solid", width=30)
         self.entry_age.grid(row=4, column=1, pady=5, padx=10, sticky="ew")
 
         # Кнопки

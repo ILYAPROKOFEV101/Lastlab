@@ -53,10 +53,7 @@ if __name__ == "__main__":
     controller.add_screen("register", register_screen)
     controller.add_screen("game", game_screen)
 
-    # Проверяем UID и показываем нужный экран
-    if check_uid():
-        controller.show_screen("game")  # Если UID найден, сразу переходим в игру
-    else:
-        controller.show_screen("register")  # Если UID нет, показываем экран регистрации
+
+    controller.show_screen("register")  # Если UID нет, показываем экран регистрации
 
 root.mainloop()

@@ -31,6 +31,6 @@ class ScreenController:
             self.root.configure(bg="lightblue")  # Устанавливаем фон окна
             self.root.title("Регистрация")  # Устанавливаем заголовок окна
         elif screen_name == "game":
-            self.root.geometry("1100x650")  # Размер для игрового экрана
+            self.root.geometry("1100x690")  # Размер для игрового экрана
             self.root.configure(bg="lightblue")  # Устанавливаем фон окна
             self.root.title("Игровой экран")  # Устанавливаем заголовок окна

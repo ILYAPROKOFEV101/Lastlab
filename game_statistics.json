@@ -1,0 +1,30 @@
+{
+    "823b356e-77f7-4af9-a307-19c5a05bea57": {
+        "wins": 2,
+        "games_played": 2,
+        "player_choices": {
+            "rock": 1,
+            "scissors": 0,
+            "paper": 1
+        },
+        "computer_choices": {
+            "rock": 0,
+            "scissors": 0,
+            "paper": 0
+        }
+    },
+    "cafc9787-0c69-4801-839a-c1a50f07a333": {
+        "wins": 1,
+        "games_played": 2,
+        "player_choices": {
+            "rock": 1,
+            "scissors": 0,
+            "paper": 1
+        },
+        "computer_choices": {
+            "rock": 0,
+            "scissors": 0,
+            "paper": 0
+        }
+    }
+}

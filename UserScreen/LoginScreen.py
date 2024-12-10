@@ -1,6 +1,6 @@
 import os
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from tkinter import font as tkfont
 from ServerAPI.Requast import ServerClient
 from ViewModel.UserViewModel import UserViewModel
@@ -33,26 +33,33 @@ class LoginScreen(tk.Frame):
 
         self.configure(bg="white")  # Белый фон
 
+        # Заголовок
+        title_label = tk.Label(self, text="Вход", font=title_font, bg="white", fg="black")
+        title_label.grid(row=0, columnspan=2, pady=20)
+
         # Email
-        tk.Label(self, text="Email:", font=label_font, bg="white", fg="black").grid(row=0, column=0, padx=20, pady=10, sticky="w")
+        tk.Label(self, text="Email:", font=label_font, bg="white", fg="black").grid(row=1, column=0, padx=20, pady=10,
+                                                                                    sticky="w")
         self.entry_email = tk.Entry(self, font=label_font, bd=2, relief="solid", width=30)
-        self.entry_email.grid(row=0, column=1, padx=20, pady=10)
+        self.entry_email.grid(row=1, column=1, padx=20, pady=10)
 
         # Пароль
-        tk.Label(self, text="Пароль:", font=label_font, bg="white", fg="black").grid(row=1, column=0, padx=20, pady=10, sticky="w")
+        tk.Label(self, text="Пароль:", font=label_font, bg="white", fg="black").grid(row=2, column=0, padx=20, pady=10,
+                                                                                     sticky="w")
         self.entry_password = tk.Entry(self, font=label_font, bd=2, relief="solid", show="*", width=30)
-        self.entry_password.grid(row=1, column=1, padx=20, pady=10)
+        self.entry_password.grid(row=2, column=1, padx=20, pady=10)
 
-        # Кнопка "Войти"
-        login_button = tk.Button(self, text="Войти", font=button_font, command=self.login, bg="#03DAC5", fg="white", relief="flat")
-        login_button.grid(row=2, columnspan=2, pady=20)
+        # Кнопки с использованием ttk
+        button_frame = ttk.Frame(self)
+        button_frame.grid(row=3, columnspan=2, pady=20)
 
-        # Кнопка "Назад к регистрации"
-        back_button = tk.Button(self, text="Назад к регистрации", font=button_font, command=self.go_to_registration, bg="#B00020", fg="white", relief="flat")
-        back_button.grid(row=3, columnspan=2, pady=20)
+        submit_button = ttk.Button(button_frame, text="Войти", command=self.login)
+        submit_button.grid(row=0, column=0, padx=10)
 
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=2)
+        back_button = ttk.Button(button_frame, text="Назад к регистрации", command=self.go_to_registration)
+        back_button.grid(row=0, column=1, padx=10)
+
+
 
 
     def login(self):

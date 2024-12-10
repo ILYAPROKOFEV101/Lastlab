@@ -68,7 +68,10 @@ class GameScreen(tk.Frame):
         exit_button.pack(pady=1)
 
         self.save_button = Button(left_frame, text="Сохронить Игру", command=self.save_game_statistics)
-        self.save_button.pack()
+        self.save_button.pack(pady=1)
+
+        self.new_game = Button(left_frame, text="Новая Игра", command=self.start_new_game)
+        self.new_game.pack()
 
         # Кнопки выбора
         button_frame = Frame(left_frame, bg="lightblue", relief="groove")
@@ -239,6 +242,17 @@ class GameScreen(tk.Frame):
         if player_choice == computer_choice:
             return False
         return win_conditions[player_choice] == computer_choice
+
+    def start_new_game(self):
+        """Сбросить статистику и начать новую игру"""
+        self.player_choices = {"rock": 0, "scissors": 0, "paper": 0}
+        self.computer_choices = {"rock": 0, "scissors": 0, "paper": 0}
+        self.games_played = 0  # Сбросить количество сыгранных игр
+        self.game_number = 0  # Сбросить номер игры
+        self.wins = 0  # Сбросить количество побед
+        self.player_wins = 0  # Сбросить победы игрока
+        self.computer_wins = 0  # Сбросить победы компьютера
+        self.draws = 0  # Сбросить количество ничьих
 
 
 
