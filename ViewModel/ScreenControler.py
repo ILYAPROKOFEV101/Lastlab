@@ -16,3 +16,15 @@ class ScreenController:
             self.current_screen.pack_forget()  # Скрываем текущий экран
         self.current_screen = self.screens[screen_name]
         self.current_screen.pack(expand=True, fill="both")  # Показываем новый экран
+
+        # Устанавливаем размер окна в зависимости от текущего экрана
+        self.set_screen_size(screen_name)
+
+    def set_screen_size(self, screen_name):
+        """Устанавливаем размеры окна в зависимости от экрана"""
+        if screen_name == "login":
+            self.root.geometry("400x300")  # Размер для экрана входа
+        elif screen_name == "register":
+            self.root.geometry("500x350")  # Размер для экрана регистрации
+        elif screen_name == "game":
+            self.root.geometry("800x600")  # Размер для игрового экрана

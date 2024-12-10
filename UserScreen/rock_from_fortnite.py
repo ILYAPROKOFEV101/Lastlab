@@ -66,7 +66,11 @@ class GameScreen(tk.Frame):
         computer_choice = self.intelligent_choice()
 
         # Загружаем изображение выбора компьютера
-        choice_image_path = os.path.join(self.data_directory, f"{computer_choice}.png")
+        if computer_choice == "paper":
+            choice_image_path = os.path.join(self.data_directory, "paiper.png")  # Используем 'paiper.png' для paper
+        else:
+            choice_image_path = os.path.join(self.data_directory, f"{computer_choice}.png")
+
         computer_image = ImageTk.PhotoImage(Image.open(choice_image_path).resize((80, 80)))
         self.computer_choice_label.config(image=computer_image)
         self.computer_choice_label.image = computer_image
@@ -75,15 +79,17 @@ class GameScreen(tk.Frame):
         if choice == computer_choice:
             result = "Ничья!"
         elif (choice == "rock" and computer_choice == "scissors") or \
-             (choice == "scissors" and computer_choice == "paper") or \
-             (choice == "paper" and computer_choice == "rock"):
+                (choice == "scissors" and computer_choice == "paper") or \
+                (choice == "paper" and computer_choice == "rock"):
             result = "Вы победили!"
         else:
             result = "Вы проиграли!"
 
         self.result_label.config(text=result)
-        self.history.append(f"Игра {self.game_number}: Игрок: {choice}, Компьютер: {computer_choice}, Результат: {result}")
-        self.save_game_result(f"Игра {self.game_number}: Игрок: {choice}, Компьютер: {computer_choice}, Результат: {result}")
+        self.history.append(
+            f"Игра {self.game_number}: Игрок: {choice}, Компьютер: {computer_choice}, Результат: {result}")
+        self.save_game_result(
+            f"Игра {self.game_number}: Игрок: {choice}, Компьютер: {computer_choice}, Результат: {result}")
         self.update_history()
 
     def intelligent_choice(self):

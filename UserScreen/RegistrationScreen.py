@@ -1,10 +1,12 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 
 import os
 import tkinter as tk
 from tkinter import messagebox
 from threading import Thread
+
+
 from ServerAPI.Requast import ServerClient
 from ViewModel.UserViewModel import UserViewModel
 
@@ -13,6 +15,7 @@ class RegistrationScreen(tk.Frame):
     def __init__(self, root, controller):
         super().__init__(root)
         self.root = root
+
         self.controller = controller
         self.user_view_model = UserViewModel(ServerClient("https://meetmap.up.railway.app"))  # Инициализация
         self.data_directory = r"C:\Users\Ilya\PycharmProjects\PPSGAMEV2\data"  # Путь к директории
@@ -20,50 +23,87 @@ class RegistrationScreen(tk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        # Метки и поля ввода
-        tk.Label(self, text="Имя:").grid(row=0, column=0, padx=10, pady=5, sticky="w")
-        self.entry_name = tk.Entry(self)
-        self.entry_name.grid(row=0, column=1, padx=10, pady=5)
+        # Стилизация
+        style = ttk.Style()
+        style.configure("TLabel", font=("Arial", 12), background="#f4f4f4")
+        style.configure("TButton", font=("Arial", 12), padding=6)
+        style.configure("TEntry", font=("Arial", 12))
 
-        tk.Label(self, text="Email:").grid(row=1, column=0, padx=10, pady=5, sticky="w")
-        self.entry_email = tk.Entry(self)
-        self.entry_email.grid(row=1, column=1, padx=10, pady=5)
+        # Заголовок
+        title_label = tk.Label(self, text="Регистрация", font=("Arial", 18, "bold"), bg="#f4f4f4")
+        title_label.pack(pady=10)
 
-        tk.Label(self, text="Пароль:").grid(row=2, column=0, padx=10, pady=5, sticky="w")
-        self.entry_password = tk.Entry(self, show="*")
-        self.entry_password.grid(row=2, column=1, padx=10, pady=5)
+        # Поля ввода
+        form_frame = ttk.Frame(self, padding=(20, 10))
+        form_frame.pack(fill="x", pady=10)
 
-        tk.Label(self, text="Пол:").grid(row=3, column=0, padx=10, pady=5, sticky="w")
+        ttk.Label(form_frame, text="Имя:").grid(row=0, column=0, sticky="w", pady=5)
+        self.entry_name = ttk.Entry(form_frame)
+        self.entry_name.grid(row=0, column=1, pady=5, padx=10, sticky="ew")
+
+        ttk.Label(form_frame, text="Email:").grid(row=1, column=0, sticky="w", pady=5)
+        self.entry_email = ttk.Entry(form_frame)
+        self.entry_email.grid(row=1, column=1, pady=5, padx=10, sticky="ew")
+
+        ttk.Label(form_frame, text="Пароль:").grid(row=2, column=0, sticky="w", pady=5)
+        self.entry_password = ttk.Entry(form_frame, show="*")
+        self.entry_password.grid(row=2, column=1, pady=5, padx=10, sticky="ew")
+
+        ttk.Label(form_frame, text="Пол:").grid(row=3, column=0, sticky="w", pady=5)
         self.gender_var = tk.StringVar(value="male")
-        gender_menu = tk.OptionMenu(self, self.gender_var, "male", "female", "other")
-        gender_menu.grid(row=3, column=1, padx=10, pady=5)
+        gender_menu = ttk.Combobox(form_frame, textvariable=self.gender_var, values=["male", "female", "other"],
+                                   state="readonly")
+        gender_menu.grid(row=3, column=1, pady=5, padx=10, sticky="ew")
 
-        tk.Label(self, text="Возраст:").grid(row=4, column=0, padx=10, pady=5, sticky="w")
-        self.entry_age = tk.Entry(self)
-        self.entry_age.grid(row=4, column=1, padx=10, pady=5)
+        ttk.Label(form_frame, text="Возраст:").grid(row=4, column=0, sticky="w", pady=5)
+        self.entry_age = ttk.Entry(form_frame)
+        self.entry_age.grid(row=4, column=1, pady=5, padx=10, sticky="ew")
 
-        # Кнопка для отправки данных (регистрация)
-        submit_button = tk.Button(self, text="Регистрация", command=self.submit)
-        submit_button.grid(row=5, columnspan=2, pady=10)
+        # Кнопки
+        button_frame = ttk.Frame(self)
+        button_frame.pack(pady=20)
 
-        # Кнопка для перехода на экран входа
-        login_button = tk.Button(self, text="Войти", command=self.go_to_login)
-        login_button.grid(row=6, columnspan=2, pady=10)
+        submit_button = ttk.Button(button_frame, text="Регистрация", command=self.submit)
+        submit_button.grid(row=0, column=0, padx=10)
+
+        login_button = ttk.Button(button_frame, text="Войти", command=self.go_to_login)
+        login_button.grid(row=0, column=1, padx=10)
 
     def submit(self):
         # Получаем данные из полей ввода
-        name = self.entry_name.get()
-        email = self.entry_email.get()
-        password = self.entry_password.get()
-        gender = self.gender_var.get()
-        age = self.entry_age.get()
+        name = self.entry_name.get().strip()
+        email = self.entry_email.get().strip()
+        password = self.entry_password.get().strip()
+        gender = self.gender_var.get().strip()
+        age = self.entry_age.get().strip()
 
-        # Проверка на корректность ввода
-        if not name or not email or not password or not gender or not age:
+        # Проверка: все поля должны быть заполнены
+        if not all([name, email, password, gender, age]):
             messagebox.showwarning("Ошибка", "Все поля должны быть заполнены!")
             return
 
-        # Вызов метода для регистрации
+        # Проверка имени (минимум 2 символа, только буквы)
+        import re
+        if not re.fullmatch(r"[A-Za-zА-Яа-я\s]{2,}", name):
+            messagebox.showwarning("Ошибка", "Имя должно содержать только буквы и быть не короче 2 символов!")
+            return
+
+        # Проверка email (основной формат email)
+        if not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", email):
+            messagebox.showwarning("Ошибка", "Введите корректный адрес электронной почты!")
+            return
+
+        # Проверка пароля (минимум 6 символов, хотя бы одна цифра и одна буква)
+        if len(password) < 6:
+            messagebox.showwarning("Ошибка", "Пароль должен быть не менее 6 символов и содержать буквы и цифры!")
+            return
+
+        # Проверка возраста (число от 1 до 120)
+        if not age.isdigit() or not (1 <= int(age) <= 120):
+            messagebox.showwarning("Ошибка", "Возраст должен быть числом от 1 до 120!")
+            return
+
+        # Если все проверки пройдены, вызываем метод для регистрации
         self.user_view_model.create_user(
             name, email, password, gender, age, self.handle_registration_result
         )
@@ -73,8 +113,9 @@ class RegistrationScreen(tk.Frame):
         if isinstance(result, dict) and result.get("status") is True and "uid" in result:
             uid = result["uid"]
             self.save_uid(uid)  # Сохраняем UID
-            messagebox.showinfo("Успех", f"Регистрация завершена! UID: {uid}")
-            self.controller.show_screen("login")  # Переход на экран входа
+
+            self.destroy()  # Удаляем текущий экран
+            self.controller.show_screen("game")  # Переход на экран входа
         else:
             messagebox.showerror("Ошибка", "Не удалось зарегистрироваться. Проверьте данные!")
 
