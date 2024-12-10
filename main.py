@@ -1,5 +1,6 @@
 # This is a sample Python script.
 import os
+from tkinter import messagebox
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -8,6 +9,7 @@ import os
 # Основной код
 from UserScreen.LoginScreen import LoginScreen
 from UserScreen.RegistrationScreen import RegistrationScreen
+from UserScreen.go import Go
 from ViewModel.ScreenControler import ScreenController
 
 import tkinter as tk
@@ -47,13 +49,15 @@ if __name__ == "__main__":
     register_screen = RegistrationScreen(root, controller)
     login_screen = LoginScreen(root, controller)
     game_screen = GameScreen(root, controller)
+    Goto = Go(root, controller)
 
     # Добавляем экраны в контроллер
     controller.add_screen("login", login_screen)
     controller.add_screen("register", register_screen)
     controller.add_screen("game", game_screen)
+    controller.add_screen("go", Goto)
 
 
-    controller.show_screen("register")  # Если UID нет, показываем экран регистрации
+    controller.show_screen("go")  # Если UID нет, показываем экран регистрации
 
 root.mainloop()

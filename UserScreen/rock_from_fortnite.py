@@ -298,7 +298,7 @@ class GameScreen(tk.Frame):
 
             # Добавление статистики в Text
             for player, stats in stats_data.items():
-                self.stats_text_widget.insert(tk.END, f"Статистика для {player}:\n")
+                self.stats_text_widget.insert(tk.END, f"Статистика {player}:\n")
                 self.stats_text_widget.insert(tk.END, f"  Победы: {stats['wins']}\n")
                 self.stats_text_widget.insert(tk.END, f"  Сыграно игр: {stats['games_played']}\n")
                 self.stats_text_widget.insert(tk.END, f"  Выборы игрока:\n")

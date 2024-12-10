@@ -76,8 +76,9 @@ class LoginScreen(tk.Frame):
             uid = result['uid']
 
             messagebox.showinfo("Успех", f"Вход выполнен успешно! UID: {uid}")
-            self.destroy()
+
             self.controller.show_screen("game")  # Переход на главный экран
+            self.destroy()
         else:
             # Ошибка при авторизации
             messagebox.showerror("Ошибка", "Неправильный Email или пароль!")

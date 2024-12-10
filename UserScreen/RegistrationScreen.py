@@ -127,9 +127,10 @@ class RegistrationScreen(tk.Frame):
         if isinstance(result, dict) and result.get("status") is True and "uid" in result:
             uid = result["uid"]
 
+            messagebox.showinfo("Успех", f"Вход выполнен успешно! UID: {uid}")
 
-            self.destroy()  # Удаляем текущий экран
             self.controller.show_screen("game")  # Переход на экран входа
+            self.destroy()  # Удаляем текущий экран
         else:
             messagebox.showerror("Ошибка", "Не удалось зарегистрироваться. Проверьте данные!")
 
