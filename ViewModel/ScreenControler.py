@@ -21,10 +21,16 @@ class ScreenController:
         self.set_screen_size(screen_name)
 
     def set_screen_size(self, screen_name):
-        """Устанавливаем размеры окна в зависимости от экрана"""
+        """Устанавливаем размеры окна и заголовок в зависимости от экрана"""
         if screen_name == "login":
-            self.root.geometry("400x300")  # Размер для экрана входа
+            self.root.geometry("500x350")  # Размер для экрана входа
+            self.root.configure(bg="lightblue")  # Устанавливаем фон окна
+            self.root.title("Вход в игру")  # Устанавливаем заголовок окна
         elif screen_name == "register":
             self.root.geometry("500x350")  # Размер для экрана регистрации
+            self.root.configure(bg="lightblue")  # Устанавливаем фон окна
+            self.root.title("Регистрация")  # Устанавливаем заголовок окна
         elif screen_name == "game":
-            self.root.geometry("800x600")  # Размер для игрового экрана
+            self.root.geometry("1100x650")  # Размер для игрового экрана
+            self.root.configure(bg="lightblue")  # Устанавливаем фон окна
+            self.root.title("Игровой экран")  # Устанавливаем заголовок окна

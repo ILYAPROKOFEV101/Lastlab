@@ -22,6 +22,7 @@ class RegistrationScreen(tk.Frame):
         self.uid_file = os.path.join(self.data_directory, "uid.txt")  # Путь к файлу UID
         self.create_widgets()
 
+
     def create_widgets(self):
         # Стилизация
         style = ttk.Style()
@@ -107,12 +108,13 @@ class RegistrationScreen(tk.Frame):
         self.user_view_model.create_user(
             name, email, password, gender, age, self.handle_registration_result
         )
+        self.save_uid(email)  # Сохраняем UID
 
     def handle_registration_result(self, result):
         """Обрабатывает результат регистрации."""
         if isinstance(result, dict) and result.get("status") is True and "uid" in result:
             uid = result["uid"]
-            self.save_uid(uid)  # Сохраняем UID
+
 
             self.destroy()  # Удаляем текущий экран
             self.controller.show_screen("game")  # Переход на экран входа

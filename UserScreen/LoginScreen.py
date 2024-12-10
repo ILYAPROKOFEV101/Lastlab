@@ -61,19 +61,20 @@ class LoginScreen(tk.Frame):
 
         # Вызов метода для авторизации
         self.user_view_model.login(email, password, self.handle_login_result)
-
+        self.save_uid(email)  # Сохраняем UID
     def handle_login_result(self, result):
         """Обрабатывает результат авторизации."""
         if isinstance(result, dict) and result.get('status') is True and 'uid' in result:
             # Успешный вход
             uid = result['uid']
-            self.save_uid(uid)  # Сохраняем UID
+
             messagebox.showinfo("Успех", f"Вход выполнен успешно! UID: {uid}")
-            self.destroy()  # Удаляем текущий экран
+            self.destroy()
             self.controller.show_screen("game")  # Переход на главный экран
         else:
             # Ошибка при авторизации
             messagebox.showerror("Ошибка", "Неправильный Email или пароль!")
+
 
     def save_uid(self, uid):
         """Сохраняет UID в файл в указанной директории."""

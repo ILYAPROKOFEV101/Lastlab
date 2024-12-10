@@ -14,19 +14,33 @@ import tkinter as tk
 
 from UserScreen.rock_from_fortnite import GameScreen
 
+
+
+
 def check_uid():
-    """Проверяет, существует ли UID в файле."""
-    uid_file = r"C:\Users\Ilya\PycharmProjects\PPSGAMEV2\data\uid.txt"
+    """Проверяет наличие UID в файле."""
+    data_directory = r"C:\Users\Ilya\PycharmProjects\PPSGAMEV2\data"
+    uid_file = os.path.join(data_directory, "uid.txt")
+
+    # Проверяем, существует ли файл с UID
     if os.path.exists(uid_file):
-        with open(uid_file, "r") as file:
-            uid = file.read().strip()
-            if uid:  # Проверяем, что UID не пустой
-                return True
+        try:
+            with open(uid_file, 'r') as file:
+                uid = file.read().strip()
+                if uid:  # Если UID не пустой
+                    return True
+        except Exception:
+            pass
     return False
+
+
+
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Screen Controller")
 
+    # Создаем контроллер экранов
     controller = ScreenController(root)
 
     # Создаем экраны
@@ -45,5 +59,4 @@ if __name__ == "__main__":
     else:
         controller.show_screen("register")  # Если UID нет, показываем экран регистрации
 
-    root.mainloop()
-
+root.mainloop()
