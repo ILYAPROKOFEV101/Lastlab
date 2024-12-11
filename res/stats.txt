@@ -43,16 +43,44 @@
     },
     "sigma": {
         "wins": 19,
-        "games_played": 85,
+        "games_played": 87,
         "player_choices": {
-            "rock": 4,
-            "scissors": 5,
-            "paper": 5
+            "rock": 1,
+            "scissors": 0,
+            "paper": 1
         },
         "computer_choices": {
-            "rock": 6,
+            "rock": 0,
+            "scissors": 1,
+            "paper": 1
+        }
+    },
+    "newwew@gmail.com": {
+        "wins": 2,
+        "games_played": 10,
+        "player_choices": {
+            "rock": 2,
+            "scissors": 2,
+            "paper": 1
+        },
+        "computer_choices": {
+            "rock": 1,
+            "scissors": 0,
+            "paper": 4
+        }
+    },
+    "max@gmail.com": {
+        "wins": 34,
+        "games_played": 72,
+        "player_choices": {
+            "rock": 3,
             "scissors": 4,
             "paper": 4
+        },
+        "computer_choices": {
+            "rock": 4,
+            "scissors": 4,
+            "paper": 3
         }
     }
 }

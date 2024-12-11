@@ -28,7 +28,7 @@ class ServerClient:
         payload = {
             "email": email,
             "password": password
-        }
+        }   
         try:
             response = requests.post(url, json=payload)
             response.raise_for_status()  # Проверка на ошибки HTTP

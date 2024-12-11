@@ -49,17 +49,20 @@ class LoginScreen(tk.Frame):
         self.entry_password = tk.Entry(self, font=label_font, bd=2, relief="solid", show="*", width=30)
         self.entry_password.grid(row=2, column=1, padx=20, pady=10)
 
-        # Кнопки с использованием ttk
-        button_frame = ttk.Frame(self)
+        # Создаем фрейм с белым фоном
+        button_frame = ttk.Frame(self, style="White.TFrame")
         button_frame.grid(row=3, columnspan=2, pady=20)
 
+        # Создаем стиль для белого фона
+        style = ttk.Style()
+        style.configure("White.TFrame", background="white")
+
+        # Кнопки
         submit_button = ttk.Button(button_frame, text="Войти", command=self.login)
         submit_button.grid(row=0, column=0, padx=10)
 
         back_button = ttk.Button(button_frame, text="Назад к регистрации", command=self.go_to_registration)
         back_button.grid(row=0, column=1, padx=10)
-
-
 
 
     def login(self):
@@ -82,7 +85,6 @@ class LoginScreen(tk.Frame):
         else:
             # Ошибка при авторизации
             messagebox.showerror("Ошибка", "Неправильный Email или пароль!")
-
 
     def save_uid(self, uid):
         """Сохраняет UID в файл в указанной директории."""

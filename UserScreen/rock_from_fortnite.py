@@ -276,9 +276,9 @@ class GameScreen(tk.Frame):
                 file.write(f"Games Played: {self.games_played}\n")
                 file.write(f"Games Won: {self.wins}\n")
 
-            messagebox.showinfo("Saved", "Game statistics have been saved.")
+            messagebox.showinfo("Saved", "игровая статистика сохранена .")
         except AttributeError as e:
-            messagebox.showerror("Error", f"Error saving game statistics: {str(e)}")
+            messagebox.showerror("Error", f"Ошибка при сохранения: {str(e)}")
         except ValueError as e:
             messagebox.showerror("Error", f"UID Error: {str(e)}")
         except Exception as e:
@@ -286,6 +286,7 @@ class GameScreen(tk.Frame):
 
 
         self.read_and_display_statistics("C:/Users/Ilya/PycharmProjects/PPSGAMEV2/res/stats.txt")
+
 
     def read_and_display_statistics(self, file_path):
         try:
@@ -296,20 +297,24 @@ class GameScreen(tk.Frame):
             # Очищаем текстовое поле перед добавлением новых данных
             self.stats_text_widget.delete(1.0, tk.END)
 
-            # Добавление статистики в Text
-            for player, stats in stats_data.items():
+            # Вычисление процента побед для каждого игрока
+            sorted_stats = sorted(
+                stats_data.items(),
+                key=lambda x: (x[1]['wins'] / x[1]['games_played'] if x[1]['games_played'] > 0 else 0),
+                reverse=True
+            )
+
+            # Добавление отсортированной статистики в Text
+            for player, stats in sorted_stats:
+                win_percentage = (stats['wins'] / stats['games_played'] * 100) if stats['games_played'] > 0 else 0
                 self.stats_text_widget.insert(tk.END, f"Статистика {player}:\n")
                 self.stats_text_widget.insert(tk.END, f"  Победы: {stats['wins']}\n")
                 self.stats_text_widget.insert(tk.END, f"  Сыграно игр: {stats['games_played']}\n")
-                self.stats_text_widget.insert(tk.END, f"  Выборы игрока:\n")
-                for choice, count in stats['player_choices'].items():
-                    self.stats_text_widget.insert(tk.END, f"    {choice.capitalize()}: {count}\n")
-                self.stats_text_widget.insert(tk.END, f"  Выборы компьютера:\n")
-                for choice, count in stats['computer_choices'].items():
-                    self.stats_text_widget.insert(tk.END, f"    {choice.capitalize()}: {count}\n")
+                self.stats_text_widget.insert(tk.END, f"  Процент побед: {win_percentage:.2f}%\n")
                 self.stats_text_widget.insert(tk.END, "\n")
 
         except FileNotFoundError:
             print("Файл не найден.")
         except Exception as e:
             print(f"Ошибка: {e}")
+
